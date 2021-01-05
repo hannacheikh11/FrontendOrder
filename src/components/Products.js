@@ -13,7 +13,8 @@ export default class Products extends Component{
                          <div className="product">
 
                              <a href={"#" + product._id}>
-                                 <img scr={product.image} alt={product.title}></img>
+                                 
+                                 <img src={product.image} alt={product.title}></img>
                              <p>
                                  {product.title}
                              </p>
@@ -22,7 +23,7 @@ export default class Products extends Component{
     <div>
         {product.price}€
     </div>
-    <button className="button primary">
+    <button onClick={()=>this.props.addToCart(product)} className="button primary">
         add to Order
     </button>
 
