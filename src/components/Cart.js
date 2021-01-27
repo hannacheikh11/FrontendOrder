@@ -1,31 +1,80 @@
 import React, { Component } from "react";
+import Fade from "react-reveal/Fade";
+import axios from 'axios';
+import Modal from "react-modal";
+import Zoom from "react-reveal/Zoom";
+//import API from '../api';
+import api from "../api";
+import Delete from "./Delete";
+import NewOrder from "./newOrder";
 
-export default class Cart extends Component{
+
+  class Cart extends Component{
 
   constructor(props) {
     super(props);
     this.state = {
+      cod:'',
       name: "",
       DNI:"",
       email: "",
-      address: "",
+      Adress: "",
+      order:null,
+     
       showCheckout: false,
     };
   }
-  handleInput = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+
+
+
+
+
+
+  handleInput = event => {
+    this.setState({ 
+        cod: event.target.value,
+        name: event.target.value,
+        DNI: event.target.value,
+        address:event.target.value,
+        email: event.target.value,
+        
+        //count:event.target.value,
+        total:event.target.value,
+    });
   };
-  createOrder = (e) => {
-    e.preventDefault();
-    const order = {
+  
+  
+  createOrder = event => {
+    event.preventDefault();
+    const valor = {
+      cod:this.state.cod,
       name: this.state.name,
       DNI: this.state.DNI,
       email: this.state.email,
       address: this.state.address,
+      total: this.state.total,
       cartItems: this.props.cartItems,
-    };
-    this.props.createOrder(order);
+      //count: this.props.cartItems,
+      //total: this.props.cartItems.reduce((a, c) => a + c.price * c.count, 0),
   };
+      //this.setState({order:order});
+      //this.props.createOrder(order);
+      alert("Your order " );
+    axios.post('/api/v1/orders', { ...valor})
+    .then(res => {
+      console.log(res);
+      console.log(res.data);
+     
+
+    })
+  
+  .catch(error => {
+    console.log(error)
+  })
+  };
+
+ 
+
   render() {
     const { cartItems } = this.props;
     return (
@@ -37,11 +86,16 @@ export default class Cart extends Component{
             You have {cartItems.length} in the cart{" "}
           </div>
         )}
+
+
+
+
+
         <div>
           <div className="cart">
             <ul className="cart-items">
               {cartItems.map((item) => (
-                <li key={item._id}>
+                <li key={item.codigo}>
                   <div>
                     <img src={item.image} alt={item.title}></img>
                   </div>
@@ -49,6 +103,7 @@ export default class Cart extends Component{
                     <div>{item.title}</div>
                     <div className="right">
                       {item.price} x {item.count}{" "}
+
                       <button
                         className="button"
                         onClick={() => this.props.removeFromCart(item)}
@@ -71,6 +126,9 @@ export default class Cart extends Component{
                       cartItems.reduce((a, c) => a + c.price * c.count, 0)
                     }
                   </div>
+
+
+
                   <button
                     onClick={() => {
                       this.setState({ showCheckout: true });
@@ -80,19 +138,28 @@ export default class Cart extends Component{
                     Confirmation
                   </button>
                 </div>
+                
+
+
+
+                
               </div>
+
+              
               {this.state.showCheckout && (
+                 <Fade right cascade>
                 <div className="cart">
                   <form onSubmit={this.createOrder}>
                     <ul className="form-container">
-                      <li>
-                        <label>Email</label>
+                    <li>
+                        <label>cod de 9 num</label>
                         <input
-                          name="email"
-                          type="email"
+                          name="cod"
+                          type="text"
                           required
                           onChange={this.handleInput}
                         ></input>
+                        
                       </li>
                       <li>
                         <label>Name</label>
@@ -114,7 +181,7 @@ export default class Cart extends Component{
                         ></input>
                       </li>
                       <li>
-                        <label>Address</label>
+                        <label>address</label>
                         <input
                           name="address"
                           type="text"
@@ -123,18 +190,52 @@ export default class Cart extends Component{
                         ></input>
                       </li>
                       <li>
+                        <label>Email</label>
+                        <input
+                          name="email"
+                          type="email"
+                          required
+                          onChange={this.handleInput}
+                        ></input>
+                        
+                      </li>
+
+                      <li>
+                        <label>Total Shop</label>
+                        <input
+                          name="total"
+                          type="Number"
+                          required
+                          onChange={this.handleInput}
+                        ></input>
+                        
+                      </li>
+                     
+
+                    
+                      
+                      <li>
                         <button className="button primary" type="submit">
                           Done
                         </button>
                       </li>
                     </ul>
                   </form>
-                </div>
+                </div></Fade>
               )}
-            </div>
+
+              </div>
+                
+
+
           )}
         </div>
+<NewOrder/>
+<label>If you wante delete your order please clik her:</label>
+         <Delete/>     
+                
       </div>
     );
   }
 }
+export default Cart;

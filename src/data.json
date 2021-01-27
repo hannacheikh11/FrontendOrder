@@ -1,14 +1,14 @@
 {
 "products": [
     {
-"_id":"Mask1",
+"codigo":"Mask1",
 "title":"Mask1",
 "image":"/images/item1.jpg",
 "price":3
 
     },
     {
-        "_id":"Mask2",
+        "codigo":"Mask2",
         "title":"Mask2",
         "image":"./images/item2.jpg",
         "price":3
