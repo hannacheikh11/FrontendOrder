@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import formatCurrency from '../util';
-export default class Products extends Component{
+import App from "../App";
+
+export class Products extends Component{
 
 
     render (){
@@ -9,10 +10,10 @@ export default class Products extends Component{
             <lu className="products">
 
                 {this.props.products.map(product =>(
-                    <li key = {product._id}>
+                    <li key = {product.codigo}>
                          <div className="product">
 
-                             <a href={"#" + product._id}>
+                             <a href={"#" + product.codigo}>
                                  
                                  <img src={product.image} alt={product.title}></img>
                              <p>
@@ -36,4 +37,5 @@ export default class Products extends Component{
         )
     }
 }
-
+      
+export default Products;
